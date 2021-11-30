@@ -2,6 +2,9 @@
 
 namespace ImGuiNET.Unity
 {
+    using System.Numerics;
+    using ImGuiUtil;
+
     [CreateAssetMenu(menuName = "Dear ImGui/Style")]
     sealed class StyleAsset : ScriptableObject
     {
@@ -151,7 +154,7 @@ namespace ImGuiNET.Unity
             s.CurveTessellationTol   = CurveTessellationTol;
             s.CircleSegmentMaxError  = CircleSegmentMaxError;
             for (var i = 0; i < Colors.Length; ++i)
-                s.Colors[i] = Colors[i];
+                s.Colors[i] = Colors[i].ToSystemVector();
         }
 
         public unsafe void SetFrom(ImGuiStylePtr s)
@@ -192,7 +195,7 @@ namespace ImGuiNET.Unity
             CurveTessellationTol   = s.CurveTessellationTol;
             CircleSegmentMaxError  = s.CircleSegmentMaxError;
             for (var i = 0; i < Colors.Length; ++i)
-                Colors[i] = s.Colors[i];
+                Colors[i] = s.Colors[i].ToUnityColor();
         }
 
         void Reset()

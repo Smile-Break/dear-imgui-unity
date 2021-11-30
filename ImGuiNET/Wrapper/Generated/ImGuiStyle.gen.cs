@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public unsafe partial struct ImGuiStyle
     {
         public float Alpha;
@@ -42,6 +44,8 @@ namespace ImGuiNET
         public byte AntiAliasedFill;
         public float CurveTessellationTol;
         public float CircleSegmentMaxError;
+        //public float LogSliderDeadzone;
+        //public float TabMinWidthForUnselectedCloseButton;
         public Vector4 Colors_0;
         public Vector4 Colors_1;
         public Vector4 Colors_2;
@@ -135,6 +139,8 @@ namespace ImGuiNET
         public ref float CurveTessellationTol => ref Unsafe.AsRef<float>(&NativePtr->CurveTessellationTol);
         public ref float CircleSegmentMaxError => ref Unsafe.AsRef<float>(&NativePtr->CircleSegmentMaxError);
         public RangeAccessor<Vector4> Colors => new RangeAccessor<Vector4>(&NativePtr->Colors_0, 48);
+        //public ref float LogSliderDeadzone => ref Unsafe.AsRef<float>(&NativePtr->LogSliderDeadzone);
+        //public ref float TabMinWidthForUnselectedCloseButton => ref Unsafe.AsRef<float>(&NativePtr->TabMinWidthForUnselectedCloseButton);
         public void Destroy()
         {
             ImGuiNative.ImGuiStyle_destroy(NativePtr);
