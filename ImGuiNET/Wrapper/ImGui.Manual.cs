@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public static unsafe partial class ImGui
     {
         public static bool InputText(

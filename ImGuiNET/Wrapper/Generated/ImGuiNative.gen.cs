@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public static unsafe partial class ImGuiNative
     {
         [DllImport("cimgui", CallingConvention = CallingConvention.Cdecl)]

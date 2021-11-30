@@ -6,6 +6,8 @@ using Unity.Profiling;
 
 namespace ImGuiNET.Unity
 {
+    using ImGuiUtil;
+
     /// <summary>
     /// Renderer bindings in charge of producing instructions for rendering ImGui draw data.
     /// Uses DrawMesh.
@@ -63,7 +65,7 @@ namespace ImGuiNET.Unity
 
         public void RenderDrawLists(CommandBuffer cmd, ImDrawDataPtr drawData)
         {
-            Vector2 fbSize = drawData.DisplaySize * drawData.FramebufferScale;
+            Vector2 fbSize = (drawData.DisplaySize * drawData.FramebufferScale).ToUnityVector();
             if (fbSize.x <= 0f || fbSize.y <= 0f || drawData.TotalVtxCount == 0)
                 return; // avoid rendering when minimized
 
@@ -135,8 +137,8 @@ namespace ImGuiNET.Unity
         void CreateDrawCommands(CommandBuffer cmd, ImDrawDataPtr drawData, Vector2 fbSize)
         {
             var prevTextureId = System.IntPtr.Zero;
-            var clipOffst = new Vector4(drawData.DisplayPos.x, drawData.DisplayPos.y, drawData.DisplayPos.x, drawData.DisplayPos.y);
-            var clipScale = new Vector4(drawData.FramebufferScale.x, drawData.FramebufferScale.y, drawData.FramebufferScale.x, drawData.FramebufferScale.y);
+            var clipOffst = new Vector4(drawData.DisplayPos.X, drawData.DisplayPos.Y, drawData.DisplayPos.X, drawData.DisplayPos.Y);
+            var clipScale = new Vector4(drawData.FramebufferScale.X, drawData.FramebufferScale.Y, drawData.FramebufferScale.X, drawData.FramebufferScale.Y);
 
             cmd.SetViewport(new Rect(0f, 0f, fbSize.x, fbSize.y));
             cmd.SetViewProjectionMatrices(

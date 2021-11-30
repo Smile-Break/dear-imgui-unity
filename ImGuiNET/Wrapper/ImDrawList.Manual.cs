@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public unsafe partial struct ImDrawListPtr
     {
         public void AddText(Vector2 pos, uint col, string text_begin)

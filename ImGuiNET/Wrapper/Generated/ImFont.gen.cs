@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public unsafe partial struct ImFont
     {
         public ImVector IndexAdvanceX;

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace ImGuiNET
 {
+    using System.Numerics;
+
     public unsafe partial struct ImFontPtr
     {
         public Vector2 CalcTextSizeA(float font_size, float max_width, float wrap_width, string text)

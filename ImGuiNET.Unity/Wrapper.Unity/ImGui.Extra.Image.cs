@@ -5,8 +5,11 @@ using ImGuiNET.Unity;
 
 namespace ImGuiNET
 {
-    // ImGui extra functionality related with Images
-    public static partial class ImGuiUn
+    using System.Numerics;
+    using ImGuiUtil;
+
+	// ImGui extra functionality related with Images
+	public static partial class ImGuiUn
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Image(Texture tex)
@@ -24,14 +27,14 @@ namespace ImGuiNET
         public static void Image(Sprite sprite)
         {
             SpriteInfo info = GetSpriteInfo(sprite);
-            ImGui.Image((IntPtr)GetTextureId(info.texture), info.size, info.uv0, info.uv1);
+            ImGui.Image((IntPtr)GetTextureId(info.texture), info.size.ToSystemVector(), info.uv0.ToSystemVector(), info.uv1.ToSystemVector());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Image(Sprite sprite, Vector2 size)
         {
             SpriteInfo info = GetSpriteInfo(sprite);
-            ImGui.Image((IntPtr)GetTextureId(info.texture), size, info.uv0, info.uv1);
+            ImGui.Image((IntPtr)GetTextureId(info.texture), size, info.uv0.ToSystemVector(), info.uv1.ToSystemVector());
         }
 
 
@@ -51,14 +54,14 @@ namespace ImGuiNET
         public static void ImageButton(Sprite sprite)
         {
             SpriteInfo info = GetSpriteInfo(sprite);
-            ImGui.ImageButton((IntPtr)GetTextureId(info.texture), info.size, info.uv0, info.uv1);
+            ImGui.ImageButton((IntPtr)GetTextureId(info.texture), info.size.ToSystemVector(), info.uv0.ToSystemVector(), info.uv1.ToSystemVector());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ImageButton(Sprite sprite, Vector2 size)
         {
             SpriteInfo info = GetSpriteInfo(sprite);
-            ImGui.ImageButton((IntPtr)GetTextureId(info.texture), size, info.uv0, info.uv1);
+            ImGui.ImageButton((IntPtr)GetTextureId(info.texture), size, info.uv0.ToSystemVector(), info.uv1.ToSystemVector());
         }
     }
 }
