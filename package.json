@@ -1,7 +1,7 @@
 {
   "name": "com.realgames.dear-imgui",
   "displayName": "Dear ImGui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bloat-free Immediate Mode Graphical User interface",
   "unity": "2019.3",
   "keywords": [
@@ -10,7 +10,7 @@
     "ui"
   ],
   "author": {
-    "name": "Real Games",
+    "name": "Real Games + Ember Entertainment",
     "url": "https://realgames.co"
   },
   "dependencies": {
