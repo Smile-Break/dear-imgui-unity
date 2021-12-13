@@ -10,7 +10,7 @@
 TEXTURE2D(_Tex);
 SAMPLER(sampler_Tex);
 
-half4 unpack_color(uint c)
+half4 unpack_color(int c)
 {
     half4 color = half4(
         (c      ) & 0xff,
