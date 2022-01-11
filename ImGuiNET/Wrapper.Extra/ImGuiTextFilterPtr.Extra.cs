@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -8,7 +9,7 @@ namespace ImGuiNET
     {
         public ImGuiTextFilterPtr(ref ImGuiTextFilter filter)
         {
-            NativePtr = (ImGuiTextFilter*)Unsafe.AsPointer(ref filter);
+            NativePtr = (ImGuiTextFilter*)UnsafeUtility.AddressOf(ref filter);
         }
     }
 }

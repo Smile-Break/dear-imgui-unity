@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -130,8 +131,8 @@ namespace ImGuiNET
             }
             Util.GetUtf8(input, utf8InputBytes, inputBufSize);
             uint clearBytesCount = (uint)(inputBufSize - utf8InputByteCount);
-            Unsafe.InitBlockUnaligned(utf8InputBytes + utf8InputByteCount, 0, clearBytesCount);
-            Unsafe.CopyBlock(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
+            UnsafeUtility.MemSet(utf8InputBytes + utf8InputByteCount, 0, clearBytesCount);
+            UnsafeUtility.MemCpy(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
 
             byte result = ImGuiNative.igInputText(
                 utf8LabelBytes,
@@ -220,8 +221,8 @@ namespace ImGuiNET
             }
             Util.GetUtf8(input, utf8InputBytes, inputBufSize);
             uint clearBytesCount = (uint)(inputBufSize - utf8InputByteCount);
-            Unsafe.InitBlockUnaligned(utf8InputBytes + utf8InputByteCount, 0, clearBytesCount);
-            Unsafe.CopyBlock(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
+            UnsafeUtility.MemSet(utf8InputBytes + utf8InputByteCount, 0, clearBytesCount);
+            UnsafeUtility.MemCpy(originalUtf8InputBytes, utf8InputBytes, (uint)inputBufSize);
 
             byte result = ImGuiNative.igInputTextMultiline(
                 utf8LabelBytes,

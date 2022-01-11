@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -6,7 +7,7 @@ namespace ImGuiNET
     {
         public ImGuiInputTextCallbackDataPtr(ref ImGuiInputTextCallbackData data)
         {
-            NativePtr = (ImGuiInputTextCallbackData*)Unsafe.AsPointer(ref data);
+            NativePtr = (ImGuiInputTextCallbackData*)UnsafeUtility.AddressOf(ref data);
         }
 
         public string Text => Util.StringFromPtr(NativePtr->Buf);

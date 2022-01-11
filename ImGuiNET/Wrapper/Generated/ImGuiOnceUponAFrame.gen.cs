@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -17,7 +18,7 @@ namespace ImGuiNET
         public static implicit operator ImGuiOnceUponAFramePtr(ImGuiOnceUponAFrame* nativePtr) => new ImGuiOnceUponAFramePtr(nativePtr);
         public static implicit operator ImGuiOnceUponAFrame* (ImGuiOnceUponAFramePtr wrappedPtr) => wrappedPtr.NativePtr;
         public static implicit operator ImGuiOnceUponAFramePtr(IntPtr nativePtr) => new ImGuiOnceUponAFramePtr(nativePtr);
-        public ref int RefFrame => ref Unsafe.AsRef<int>(&NativePtr->RefFrame);
+        public ref int RefFrame => ref UnsafeUtility.AsRef<int>(&NativePtr->RefFrame);
         public void Destroy()
         {
             ImGuiNative.ImGuiOnceUponAFrame_destroy(NativePtr);

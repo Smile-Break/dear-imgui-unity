@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -6,7 +7,7 @@ namespace ImGuiNET
     {
         public ImFontConfigPtr(ref ImFontConfig fontConfig)
         {
-            NativePtr = (ImFontConfig*)Unsafe.AsPointer(ref fontConfig);
+            NativePtr = (ImFontConfig*)UnsafeUtility.AddressOf(ref fontConfig);
         }
     }
 }

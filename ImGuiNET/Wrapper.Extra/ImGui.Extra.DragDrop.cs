@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Runtime.CompilerServices;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
@@ -13,15 +14,22 @@ namespace ImGuiNET
         public static unsafe void SetDragDropPayload<T>(string type, T data, ImGuiCond cond = 0)
         where T : unmanaged
         {
-            void* ptr = Unsafe.AsPointer(ref data);
-            SetDragDropPayload(type, new IntPtr(ptr), (uint)Unsafe.SizeOf<T>(), cond);
+            void* ptr = UnsafeUtility.AddressOf(ref data);
+            SetDragDropPayload(type, new IntPtr(ptr), (uint)UnsafeUtility.SizeOf<T>(), cond);
         }
 
         public static unsafe bool AcceptDragDropPayload<T>(string type, out T payload, ImGuiDragDropFlags flags = ImGuiDragDropFlags.None)
         where T : unmanaged
         {
             ImGuiPayload* pload = AcceptDragDropPayload(type, flags);
-            payload = (pload != null) ? Unsafe.Read<T>(pload->Data) : default;
+            if (pload != null)
+            {
+                UnsafeUtility.CopyPtrToStructure(pload->Data, out payload);
+            }
+            else
+            {
+                payload = default;
+            }
             return pload != null;
         }
 
