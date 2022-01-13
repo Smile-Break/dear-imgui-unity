@@ -69,7 +69,15 @@ namespace ImGuiNET.Unity
 
         public void RenderDrawLists(CommandBuffer cmd, ImDrawDataPtr drawData)
         {
-            Vector2 fbSize = (drawData.DisplaySize * drawData.FramebufferScale).ToUnityVector();
+            float renderScale = 1.0f;
+            if (RenderUtils.IsUsingURP())
+            {
+                var qualityLevel = QualitySettings.GetQualityLevel();
+                var urp = (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)QualitySettings.GetRenderPipelineAssetAt(qualityLevel);
+                renderScale = urp.renderScale;
+            }
+
+            Vector2 fbSize = (drawData.DisplaySize * drawData.FramebufferScale * renderScale).ToUnityVector();
             if (fbSize.x <= 0f || fbSize.y <= 0f || drawData.TotalVtxCount == 0)
                 return; // avoid rendering when minimized
 
@@ -155,15 +163,27 @@ namespace ImGuiNET.Unity
 
         void CreateDrawCommands(CommandBuffer cmd, ImDrawDataPtr drawData, Vector2 fbSize)
         {
+            float renderScale = 1.0f;
+            if (RenderUtils.IsUsingURP())
+            {
+                var qualityLevel = QualitySettings.GetQualityLevel();
+                var urp = (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)QualitySettings.GetRenderPipelineAssetAt(qualityLevel);
+                renderScale = urp.renderScale;
+            }
+
             var prevTextureId = System.IntPtr.Zero;
             var clipOffst = new Vector4(drawData.DisplayPos.X, drawData.DisplayPos.Y, drawData.DisplayPos.X, drawData.DisplayPos.Y);
-            var clipScale = new Vector4(drawData.FramebufferScale.X, drawData.FramebufferScale.Y, drawData.FramebufferScale.X, drawData.FramebufferScale.Y);
+            var clipScale = new Vector4(drawData.FramebufferScale.X, drawData.FramebufferScale.Y, drawData.FramebufferScale.X, drawData.FramebufferScale.Y) * renderScale;
 
             _material.SetBuffer(_verticesID, _vtxBuf);                          // bind vertex buffer
 
+            var TRS = Matrix4x4.TRS(
+                new Vector3(0.5f / fbSize.x, 0.5f / fbSize.y, 0f), // small adjustment to improve text
+                Quaternion.identity,
+                new Vector3(renderScale, renderScale, 0f));
             cmd.SetViewport(new Rect(0f, 0f, fbSize.x, fbSize.y));
             cmd.SetViewProjectionMatrices(
-                Matrix4x4.Translate(new Vector3(0.5f / fbSize.x, 0.5f / fbSize.y, 0f)), // small adjustment to improve text
+                TRS,
                 Matrix4x4.Ortho(0f, fbSize.x, fbSize.y, 0f, 0f, 1f));
 
             int vtxOf = 0;
