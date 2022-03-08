@@ -45,6 +45,7 @@ namespace ImGuiNET.Unity
 
         public void Assign(ImGuiIOPtr io)
         {
+#if !IMGUI_IL2CPP
             io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_setClipboardText);
             io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_getClipboardText);
             io.ImeSetInputScreenPosFn = Marshal.GetFunctionPointerForDelegate(_imeSetInputScreenPos);
@@ -54,6 +55,7 @@ namespace ImGuiNET.Unity
                 LogAssertFn = Marshal.GetFunctionPointerForDelegate(_logAssert),
                 DebugBreakFn = Marshal.GetFunctionPointerForDelegate(_debugBreak),
             });
+#endif
 #endif
         }
 
