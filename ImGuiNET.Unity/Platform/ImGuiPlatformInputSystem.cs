@@ -44,7 +44,7 @@ namespace ImGuiNET.Unity
         {
             _cursorShapes = cursorShapes;
             _iniSettings = iniSettings;
-            _callbacks.ImeSetInputScreenPos = (x, y) => _keyboard.SetIMECursorPosition(new Vector2(x, y));
+            _callbacks.SetPlatformImeData = (x, y) => _keyboard.SetIMECursorPosition(new Vector2(x, y));
         }
 
         public bool Initialize(ImGuiIOPtr io)
@@ -82,7 +82,7 @@ namespace ImGuiNET.Unity
         {
             Assert.IsTrue(io.Fonts.IsBuilt(), "Font atlas not built! Generally built by the renderer. Missing call to renderer NewFrame() function?");
 
-            io.DisplaySize = new Vector2(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
+            io.DisplaySize = new System.Numerics.Vector2(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
             // TODO: dpi aware, scale, etc
 
             io.DeltaTime = Time.unscaledDeltaTime;                              // setup timestep
@@ -128,7 +128,7 @@ namespace ImGuiNET.Unity
                 io.KeyMap[(int)ImGuiKey.Space      ] = (int)Key.Space,
                 io.KeyMap[(int)ImGuiKey.Enter      ] = (int)Key.Enter,
                 io.KeyMap[(int)ImGuiKey.Escape     ] = (int)Key.Escape,
-                io.KeyMap[(int)ImGuiKey.KeyPadEnter] = (int)Key.NumpadEnter,
+                io.KeyMap[(int)ImGuiKey.KeypadEnter] = (int)Key.NumpadEnter,
                 // letter keys mapped by display name to avoid being layout agnostic (used as shortcuts)
                 io.KeyMap[(int)ImGuiKey.A          ] = (int)((KeyControl)kb["#(a)"]).keyCode, // for text edit CTRL+A: select all
                 io.KeyMap[(int)ImGuiKey.C          ] = (int)((KeyControl)kb["#(c)"]).keyCode, // for text edit CTRL+C: copy
@@ -167,9 +167,10 @@ namespace ImGuiNET.Unity
                 return;
 
             if (io.WantSetMousePos) // set Unity mouse position if requested
-                mouse.WarpCursorPosition(ImGuiUn.ImGuiToScreen(io.MousePos));
+                mouse.WarpCursorPosition(ImGuiUn.ImGuiToScreen(new Vector2(io.MousePos.X, io.MousePos.Y)));
 
-            io.MousePos = ImGuiUn.ScreenToImGui(mouse.position.ReadValue());
+			Vector2 mousePos = ImGuiUn.ScreenToImGui(mouse.position.ReadValue());
+			io.MousePos = new System.Numerics.Vector2(mousePos.x, mousePos.y);
 
             Vector2 mouseScroll = mouse.scroll.ReadValue() / 120f;
             io.MouseWheel   = mouseScroll.y;

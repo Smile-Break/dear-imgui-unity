@@ -178,7 +178,7 @@ namespace ImGuiNET.Unity
                     // TODO: user callback in drawCmd.UserCallback & drawCmd.UserCallbackData
 
                     // project scissor rectangle into framebuffer space and skip if fully outside
-                    var clip = Vector4.Scale(drawCmd.ClipRect - clipOffst, clipScale);
+                    var clip = Vector4.Scale(new Vector4(drawCmd.ClipRect.X, drawCmd.ClipRect.Y, drawCmd.ClipRect.Z, drawCmd.ClipRect.W) - clipOffst, clipScale);
                     if (clip.x >= fbSize.x || clip.y >= fbSize.y || clip.z < 0f || clip.w < 0f) continue;
 
                     if (prevTextureId != drawCmd.TextureId)

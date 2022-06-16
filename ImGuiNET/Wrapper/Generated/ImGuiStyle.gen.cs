@@ -1,16 +1,15 @@
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
 {
-    using System.Numerics;
-
     public unsafe partial struct ImGuiStyle
     {
         public float Alpha;
+        public float DisabledAlpha;
         public Vector2 WindowPadding;
         public float WindowRounding;
         public float WindowBorderSize;
@@ -26,6 +25,7 @@ namespace ImGuiNET
         public float FrameBorderSize;
         public Vector2 ItemSpacing;
         public Vector2 ItemInnerSpacing;
+        public Vector2 CellPadding;
         public Vector2 TouchExtraPadding;
         public float IndentSpacing;
         public float ColumnsMinSpacing;
@@ -33,8 +33,10 @@ namespace ImGuiNET
         public float ScrollbarRounding;
         public float GrabMinSize;
         public float GrabRounding;
+        public float LogSliderDeadzone;
         public float TabRounding;
         public float TabBorderSize;
+        public float TabMinWidthForCloseButton;
         public ImGuiDir ColorButtonPosition;
         public Vector2 ButtonTextAlign;
         public Vector2 SelectableTextAlign;
@@ -42,11 +44,10 @@ namespace ImGuiNET
         public Vector2 DisplaySafeAreaPadding;
         public float MouseCursorScale;
         public byte AntiAliasedLines;
+        public byte AntiAliasedLinesUseTex;
         public byte AntiAliasedFill;
         public float CurveTessellationTol;
-        public float CircleSegmentMaxError;
-        //public float LogSliderDeadzone;
-        //public float TabMinWidthForUnselectedCloseButton;
+        public float CircleTessellationMaxError;
         public Vector4 Colors_0;
         public Vector4 Colors_1;
         public Vector4 Colors_2;
@@ -95,6 +96,13 @@ namespace ImGuiNET
         public Vector4 Colors_45;
         public Vector4 Colors_46;
         public Vector4 Colors_47;
+        public Vector4 Colors_48;
+        public Vector4 Colors_49;
+        public Vector4 Colors_50;
+        public Vector4 Colors_51;
+        public Vector4 Colors_52;
+        public Vector4 Colors_53;
+        public Vector4 Colors_54;
     }
     public unsafe partial struct ImGuiStylePtr
     {
@@ -105,6 +113,7 @@ namespace ImGuiNET
         public static implicit operator ImGuiStyle* (ImGuiStylePtr wrappedPtr) => wrappedPtr.NativePtr;
         public static implicit operator ImGuiStylePtr(IntPtr nativePtr) => new ImGuiStylePtr(nativePtr);
         public ref float Alpha => ref UnsafeUtility.AsRef<float>(&NativePtr->Alpha);
+        public ref float DisabledAlpha => ref UnsafeUtility.AsRef<float>(&NativePtr->DisabledAlpha);
         public ref Vector2 WindowPadding => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->WindowPadding);
         public ref float WindowRounding => ref UnsafeUtility.AsRef<float>(&NativePtr->WindowRounding);
         public ref float WindowBorderSize => ref UnsafeUtility.AsRef<float>(&NativePtr->WindowBorderSize);
@@ -120,6 +129,7 @@ namespace ImGuiNET
         public ref float FrameBorderSize => ref UnsafeUtility.AsRef<float>(&NativePtr->FrameBorderSize);
         public ref Vector2 ItemSpacing => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->ItemSpacing);
         public ref Vector2 ItemInnerSpacing => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->ItemInnerSpacing);
+        public ref Vector2 CellPadding => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->CellPadding);
         public ref Vector2 TouchExtraPadding => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->TouchExtraPadding);
         public ref float IndentSpacing => ref UnsafeUtility.AsRef<float>(&NativePtr->IndentSpacing);
         public ref float ColumnsMinSpacing => ref UnsafeUtility.AsRef<float>(&NativePtr->ColumnsMinSpacing);
@@ -127,8 +137,10 @@ namespace ImGuiNET
         public ref float ScrollbarRounding => ref UnsafeUtility.AsRef<float>(&NativePtr->ScrollbarRounding);
         public ref float GrabMinSize => ref UnsafeUtility.AsRef<float>(&NativePtr->GrabMinSize);
         public ref float GrabRounding => ref UnsafeUtility.AsRef<float>(&NativePtr->GrabRounding);
+        public ref float LogSliderDeadzone => ref UnsafeUtility.AsRef<float>(&NativePtr->LogSliderDeadzone);
         public ref float TabRounding => ref UnsafeUtility.AsRef<float>(&NativePtr->TabRounding);
         public ref float TabBorderSize => ref UnsafeUtility.AsRef<float>(&NativePtr->TabBorderSize);
+        public ref float TabMinWidthForCloseButton => ref UnsafeUtility.AsRef<float>(&NativePtr->TabMinWidthForCloseButton);
         public ref ImGuiDir ColorButtonPosition => ref UnsafeUtility.AsRef<ImGuiDir>(&NativePtr->ColorButtonPosition);
         public ref Vector2 ButtonTextAlign => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->ButtonTextAlign);
         public ref Vector2 SelectableTextAlign => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->SelectableTextAlign);
@@ -136,19 +148,18 @@ namespace ImGuiNET
         public ref Vector2 DisplaySafeAreaPadding => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->DisplaySafeAreaPadding);
         public ref float MouseCursorScale => ref UnsafeUtility.AsRef<float>(&NativePtr->MouseCursorScale);
         public ref bool AntiAliasedLines => ref UnsafeUtility.AsRef<bool>(&NativePtr->AntiAliasedLines);
+        public ref bool AntiAliasedLinesUseTex => ref UnsafeUtility.AsRef<bool>(&NativePtr->AntiAliasedLinesUseTex);
         public ref bool AntiAliasedFill => ref UnsafeUtility.AsRef<bool>(&NativePtr->AntiAliasedFill);
         public ref float CurveTessellationTol => ref UnsafeUtility.AsRef<float>(&NativePtr->CurveTessellationTol);
-        public ref float CircleSegmentMaxError => ref UnsafeUtility.AsRef<float>(&NativePtr->CircleSegmentMaxError);
-        public RangeAccessor<Vector4> Colors => new RangeAccessor<Vector4>(&NativePtr->Colors_0, 48);
-        //public ref float LogSliderDeadzone => ref Unsafe.AsRef<float>(&NativePtr->LogSliderDeadzone);
-        //public ref float TabMinWidthForUnselectedCloseButton => ref Unsafe.AsRef<float>(&NativePtr->TabMinWidthForUnselectedCloseButton);
+        public ref float CircleTessellationMaxError => ref UnsafeUtility.AsRef<float>(&NativePtr->CircleTessellationMaxError);
+        public RangeAccessor<Vector4> Colors => new RangeAccessor<Vector4>(&NativePtr->Colors_0, 55);
         public void Destroy()
         {
-            ImGuiNative.ImGuiStyle_destroy(NativePtr);
+            ImGuiNative.ImGuiStyle_destroy((ImGuiStyle*)(NativePtr));
         }
         public void ScaleAllSizes(float scale_factor)
         {
-            ImGuiNative.ImGuiStyle_ScaleAllSizes(NativePtr, scale_factor);
+            ImGuiNative.ImGuiStyle_ScaleAllSizes((ImGuiStyle*)(NativePtr), scale_factor);
         }
     }
 }

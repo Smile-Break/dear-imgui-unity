@@ -14,7 +14,7 @@ namespace ImGuiNET.Unity
     delegate void SetClipboardTextSafeCallback(IntPtr user_data, string text);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    delegate void ImeSetInputScreenPosCallback(int x, int y);
+    delegate void SetPlatformImeDataCallback(int x, int y);
 
 #if IMGUI_FEATURE_CUSTOM_ASSERT
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -37,7 +37,7 @@ namespace ImGuiNET.Unity
         // after assigning its function pointers to unmanaged code
         GetClipboardTextCallback _getClipboardText;
         SetClipboardTextCallback _setClipboardText;
-        ImeSetInputScreenPosCallback _imeSetInputScreenPos;
+		SetPlatformImeDataCallback _setPlatformImeData;
 #if IMGUI_FEATURE_CUSTOM_ASSERT
         LogAssertCallback _logAssert;
         DebugBreakCallback _debugBreak;
@@ -47,7 +47,7 @@ namespace ImGuiNET.Unity
         {
             io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_setClipboardText);
             io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_getClipboardText);
-            io.ImeSetInputScreenPosFn = Marshal.GetFunctionPointerForDelegate(_imeSetInputScreenPos);
+            io.SetPlatformImeDataFn = Marshal.GetFunctionPointerForDelegate(_setPlatformImeData);
 #if IMGUI_FEATURE_CUSTOM_ASSERT
             io.SetBackendPlatformUserData<CustomAssertData>(new CustomAssertData
             {
@@ -61,7 +61,7 @@ namespace ImGuiNET.Unity
         {
             io.SetClipboardTextFn = IntPtr.Zero;
             io.GetClipboardTextFn = IntPtr.Zero;
-            io.ImeSetInputScreenPosFn = IntPtr.Zero;
+            io.SetPlatformImeDataFn = IntPtr.Zero;
 #if IMGUI_FEATURE_CUSTOM_ASSERT
             io.SetBackendPlatformUserData<CustomAssertData>(null);
 #endif
@@ -86,9 +86,9 @@ namespace ImGuiNET.Unity
             };
         }
 
-        public ImeSetInputScreenPosCallback ImeSetInputScreenPos
-        {
-            set => _imeSetInputScreenPos = (x, y) =>
+        public SetPlatformImeDataCallback SetPlatformImeData
+		{
+            set => _setPlatformImeData = (x, y) =>
             {
                 try { value(x, y); }
                 catch (Exception ex) { Debug.LogException(ex); }

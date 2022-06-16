@@ -39,7 +39,7 @@ namespace ImGuiNET.Unity
         {
             _cursorShapes = cursorShapes;
             _iniSettings = iniSettings;
-            _callbacks.ImeSetInputScreenPos = (x, y) => Input.compositionCursorPos = new Vector2(x, y);
+            _callbacks.SetPlatformImeData = (x, y) => Input.compositionCursorPos = new Vector2(x, y);
         }
 
         public bool Initialize(ImGuiIOPtr io)
@@ -73,7 +73,7 @@ namespace ImGuiNET.Unity
         {
             Assert.IsTrue(io.Fonts.IsBuilt(), "Font atlas not built! Generally built by the renderer. Missing call to renderer NewFrame() function?");
 
-            io.DisplaySize = new Vector2(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
+            io.DisplaySize = new System.Numerics.Vector2(displayRect.width, displayRect.height);// setup display size (every frame to accommodate for window resizing)
             // TODO: dpi aware, scale, etc
 
             io.DeltaTime = Time.unscaledDeltaTime;                              // setup timestep
@@ -110,7 +110,7 @@ namespace ImGuiNET.Unity
                 io.KeyMap[(int)ImGuiKey.Space      ] = (int)KeyCode.Space,
                 io.KeyMap[(int)ImGuiKey.Enter      ] = (int)KeyCode.Return,
                 io.KeyMap[(int)ImGuiKey.Escape     ] = (int)KeyCode.Escape,
-                io.KeyMap[(int)ImGuiKey.KeyPadEnter] = (int)KeyCode.KeypadEnter,
+                io.KeyMap[(int)ImGuiKey.KeypadEnter] = (int)KeyCode.KeypadEnter,
                 io.KeyMap[(int)ImGuiKey.A          ] = (int)KeyCode.A,           // for text edit CTRL+A: select all
                 io.KeyMap[(int)ImGuiKey.C          ] = (int)KeyCode.C,           // for text edit CTRL+C: copy
                 io.KeyMap[(int)ImGuiKey.V          ] = (int)KeyCode.V,           // for text edit CTRL+V: paste
@@ -141,7 +141,8 @@ namespace ImGuiNET.Unity
 
         static void UpdateMouse(ImGuiIOPtr io)
         {
-            io.MousePos = ImGuiUn.ScreenToImGui(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+			Vector2 screenCoord = ImGuiUn.ScreenToImGui(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+			io.MousePos = new System.Numerics.Vector2(screenCoord.x, screenCoord.y);
 
             io.MouseWheel  = Input.mouseScrollDelta.y;
             io.MouseWheelH = Input.mouseScrollDelta.x;

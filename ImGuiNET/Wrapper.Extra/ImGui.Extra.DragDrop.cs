@@ -9,7 +9,7 @@ namespace ImGuiNET
     public static partial class ImGui
     {
         // TODO: review
-        // can now pass refs with Unsafe.AsRef
+        // can now pass refs with UnsafeUtility.AsRef
 
         public static unsafe void SetDragDropPayload<T>(string type, T data, ImGuiCond cond = 0)
         where T : unmanaged

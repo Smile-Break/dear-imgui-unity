@@ -1,7 +1,7 @@
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
@@ -35,11 +35,11 @@ namespace ImGuiNET
         public ref bool Delivery => ref UnsafeUtility.AsRef<bool>(&NativePtr->Delivery);
         public void Clear()
         {
-            ImGuiNative.ImGuiPayload_Clear(NativePtr);
+            ImGuiNative.ImGuiPayload_Clear((ImGuiPayload*)(NativePtr));
         }
         public void Destroy()
         {
-            ImGuiNative.ImGuiPayload_destroy(NativePtr);
+            ImGuiNative.ImGuiPayload_destroy((ImGuiPayload*)(NativePtr));
         }
         public bool IsDataType(string type)
         {
@@ -61,7 +61,7 @@ namespace ImGuiNET
                 native_type[native_type_offset] = 0;
             }
             else { native_type = null; }
-            byte ret = ImGuiNative.ImGuiPayload_IsDataType(NativePtr, native_type);
+            byte ret = ImGuiNative.ImGuiPayload_IsDataType((ImGuiPayload*)(NativePtr), native_type);
             if (type_byteCount > Util.StackAllocationSizeLimit)
             {
                 Util.Free(native_type);
@@ -70,12 +70,12 @@ namespace ImGuiNET
         }
         public bool IsDelivery()
         {
-            byte ret = ImGuiNative.ImGuiPayload_IsDelivery(NativePtr);
+            byte ret = ImGuiNative.ImGuiPayload_IsDelivery((ImGuiPayload*)(NativePtr));
             return ret != 0;
         }
         public bool IsPreview()
         {
-            byte ret = ImGuiNative.ImGuiPayload_IsPreview(NativePtr);
+            byte ret = ImGuiNative.ImGuiPayload_IsPreview((ImGuiPayload*)(NativePtr));
             return ret != 0;
         }
     }

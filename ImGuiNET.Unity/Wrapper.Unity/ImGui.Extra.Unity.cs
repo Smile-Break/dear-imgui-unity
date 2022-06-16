@@ -10,13 +10,13 @@ namespace ImGuiNET
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ScreenToImGui(in Vector2 point)
         {
-            return new Vector2(point.x, ImGui.GetIO().DisplaySize.y - point.y);
+            return new Vector2(point.x, ImGui.GetIO().DisplaySize.Y - point.y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ImGuiToScreen(in Vector2 point)
         {
-            return new Vector2(point.x, ImGui.GetIO().DisplaySize.y - point.y);
+            return new Vector2(point.x, ImGui.GetIO().DisplaySize.Y - point.y);
         }
     }
 }

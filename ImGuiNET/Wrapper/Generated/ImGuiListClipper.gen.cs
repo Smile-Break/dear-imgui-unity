@@ -1,7 +1,7 @@
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace ImGuiNET
@@ -11,9 +11,9 @@ namespace ImGuiNET
         public int DisplayStart;
         public int DisplayEnd;
         public int ItemsCount;
-        public int StepNo;
         public float ItemsHeight;
         public float StartPosY;
+        public void* TempData;
     }
     public unsafe partial struct ImGuiListClipperPtr
     {
@@ -26,29 +26,33 @@ namespace ImGuiNET
         public ref int DisplayStart => ref UnsafeUtility.AsRef<int>(&NativePtr->DisplayStart);
         public ref int DisplayEnd => ref UnsafeUtility.AsRef<int>(&NativePtr->DisplayEnd);
         public ref int ItemsCount => ref UnsafeUtility.AsRef<int>(&NativePtr->ItemsCount);
-        public ref int StepNo => ref UnsafeUtility.AsRef<int>(&NativePtr->StepNo);
         public ref float ItemsHeight => ref UnsafeUtility.AsRef<float>(&NativePtr->ItemsHeight);
         public ref float StartPosY => ref UnsafeUtility.AsRef<float>(&NativePtr->StartPosY);
+        public IntPtr TempData { get => (IntPtr)NativePtr->TempData; set => NativePtr->TempData = (void*)value; }
         public void Begin(int items_count)
         {
             float items_height = -1.0f;
-            ImGuiNative.ImGuiListClipper_Begin(NativePtr, items_count, items_height);
+            ImGuiNative.ImGuiListClipper_Begin((ImGuiListClipper*)(NativePtr), items_count, items_height);
         }
         public void Begin(int items_count, float items_height)
         {
-            ImGuiNative.ImGuiListClipper_Begin(NativePtr, items_count, items_height);
+            ImGuiNative.ImGuiListClipper_Begin((ImGuiListClipper*)(NativePtr), items_count, items_height);
         }
         public void Destroy()
         {
-            ImGuiNative.ImGuiListClipper_destroy(NativePtr);
+            ImGuiNative.ImGuiListClipper_destroy((ImGuiListClipper*)(NativePtr));
         }
         public void End()
         {
-            ImGuiNative.ImGuiListClipper_End(NativePtr);
+            ImGuiNative.ImGuiListClipper_End((ImGuiListClipper*)(NativePtr));
+        }
+        public void ForceDisplayRangeByIndices(int item_min, int item_max)
+        {
+            ImGuiNative.ImGuiListClipper_ForceDisplayRangeByIndices((ImGuiListClipper*)(NativePtr), item_min, item_max);
         }
         public bool Step()
         {
-            byte ret = ImGuiNative.ImGuiListClipper_Step(NativePtr);
+            byte ret = ImGuiNative.ImGuiListClipper_Step((ImGuiListClipper*)(NativePtr));
             return ret != 0;
         }
     }
