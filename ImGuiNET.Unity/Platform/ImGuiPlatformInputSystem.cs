@@ -111,6 +111,17 @@ namespace ImGuiNET.Unity
             }
             _keyboard = kb;
 
+            int RemapKey(string key, Key defaultKey)
+            {
+                var result = kb.FindKeyOnCurrentKeyboardLayout(key);
+                if (result != null)
+                {
+                    return (int)result.keyCode;
+                }
+
+                return (int)defaultKey;
+            }
+
             _mainKeys = new int[] {
                 // map and store new keys by assigning io.KeyMap and setting value of array
                 io.KeyMap[(int)ImGuiKey.Tab        ] = (int)Key.Tab,
@@ -130,13 +141,14 @@ namespace ImGuiNET.Unity
                 io.KeyMap[(int)ImGuiKey.Escape     ] = (int)Key.Escape,
                 io.KeyMap[(int)ImGuiKey.KeypadEnter] = (int)Key.NumpadEnter,
                 // letter keys mapped by display name to avoid being layout agnostic (used as shortcuts)
-                io.KeyMap[(int)ImGuiKey.A          ] = (int)((KeyControl)kb["#(a)"]).keyCode, // for text edit CTRL+A: select all
-                io.KeyMap[(int)ImGuiKey.C          ] = (int)((KeyControl)kb["#(c)"]).keyCode, // for text edit CTRL+C: copy
-                io.KeyMap[(int)ImGuiKey.V          ] = (int)((KeyControl)kb["#(v)"]).keyCode, // for text edit CTRL+V: paste
-                io.KeyMap[(int)ImGuiKey.X          ] = (int)((KeyControl)kb["#(x)"]).keyCode, // for text edit CTRL+X: cut
-                io.KeyMap[(int)ImGuiKey.Y          ] = (int)((KeyControl)kb["#(y)"]).keyCode, // for text edit CTRL+Y: redo
-                io.KeyMap[(int)ImGuiKey.Z          ] = (int)((KeyControl)kb["#(z)"]).keyCode, // for text edit CTRL+Z: undo
+                io.KeyMap[(int)ImGuiKey.A          ] = RemapKey("#(a)", Key.A), // for text edit CTRL+A: select all
+                io.KeyMap[(int)ImGuiKey.C          ] = RemapKey("#(c)", Key.C), // for text edit CTRL+C: copy
+                io.KeyMap[(int)ImGuiKey.V          ] = RemapKey("#(v)", Key.V), // for text edit CTRL+V: paste
+                io.KeyMap[(int)ImGuiKey.X          ] = RemapKey("#(x)", Key.X), // for text edit CTRL+X: cut
+                io.KeyMap[(int)ImGuiKey.Y          ] = RemapKey("#(y)", Key.Y), // for text edit CTRL+Y: redo
+                io.KeyMap[(int)ImGuiKey.Z          ] = RemapKey("#(z)", Key.Z), // for text edit CTRL+Z: undo
             };
+
             _keyboard.onTextInput += _textInput.Add;
         }
 
