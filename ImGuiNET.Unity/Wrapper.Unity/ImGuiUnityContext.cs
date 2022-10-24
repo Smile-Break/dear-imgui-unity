@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using ImGuiNET.Unity;
+using ImPlotNET;
 
 namespace ImGuiNET
 {
     sealed class ImGuiUnityContext
     {
         public IntPtr state;            // ImGui internal state
+        public IntPtr imPlotState;
         public TextureManager textures; // texture / font state
     }
 
@@ -27,12 +29,14 @@ namespace ImGuiNET
             return new ImGuiUnityContext
             {
                 state = ImGui.CreateContext(),
-                textures = new TextureManager(),
+                imPlotState = ImPlot.CreateContext(),
+				textures = new TextureManager(),
             };
         }
 
         internal static void DestroyUnityContext(ImGuiUnityContext context)
         {
+            ImPlot.DestroyContext(context.imPlotState);
             ImGui.DestroyContext(context.state);
         }
 
@@ -40,6 +44,8 @@ namespace ImGuiNET
         {
             s_currentUnityContext = context;
             ImGui.SetCurrentContext(context?.state ?? IntPtr.Zero);
+            ImPlot.SetCurrentContext(context?.imPlotState ?? IntPtr.Zero);
+            ImPlot.SetImGuiContext(context?.state ?? IntPtr.Zero);
         }
     }
 }
