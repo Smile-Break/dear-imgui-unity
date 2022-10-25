@@ -57,10 +57,7 @@ namespace ImPlotNET
         public Vector4 Colors_18;
         public Vector4 Colors_19;
         public Vector4 Colors_20;
-        public Vector4 Colors_21;
-        public Vector4 Colors_22;
-        public Vector4 Colors_23;
-        public byte AntiAliasedLines;
+        public ImPlotColormap Colormap;
         public byte UseLocalTime;
         public byte UseISO8601;
         public byte Use24HourClock;
@@ -100,8 +97,8 @@ namespace ImPlotNET
         public ref Vector2 FitPadding => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->FitPadding);
         public ref Vector2 PlotDefaultSize => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->PlotDefaultSize);
         public ref Vector2 PlotMinSize => ref UnsafeUtility.AsRef<Vector2>(&NativePtr->PlotMinSize);
-        public RangeAccessor<Vector4> Colors => new RangeAccessor<Vector4>(&NativePtr->Colors_0, 24);
-        public ref bool AntiAliasedLines => ref UnsafeUtility.AsRef<bool>(&NativePtr->AntiAliasedLines);
+        public RangeAccessor<Vector4> Colors => new RangeAccessor<Vector4>(&NativePtr->Colors_0, 21);
+        public ref ImPlotColormap Colormap => ref UnsafeUtility.AsRef<ImPlotColormap>(&NativePtr->Colormap);
         public ref bool UseLocalTime => ref UnsafeUtility.AsRef<bool>(&NativePtr->UseLocalTime);
         public ref bool UseISO8601 => ref UnsafeUtility.AsRef<bool>(&NativePtr->UseISO8601);
         public ref bool Use24HourClock => ref UnsafeUtility.AsRef<bool>(&NativePtr->Use24HourClock);

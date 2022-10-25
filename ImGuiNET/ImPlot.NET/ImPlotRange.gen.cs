@@ -22,6 +22,11 @@ namespace ImPlotNET
         public static implicit operator ImPlotRangePtr(IntPtr nativePtr) => new ImPlotRangePtr(nativePtr);
         public ref double Min => ref UnsafeUtility.AsRef<double>(&NativePtr->Min);
         public ref double Max => ref UnsafeUtility.AsRef<double>(&NativePtr->Max);
+        public double Clamp(double value)
+        {
+            double ret = ImPlotNative.ImPlotRange_Clamp((ImPlotRange*)(NativePtr), value);
+            return ret;
+        }
         public bool Contains(double value)
         {
             byte ret = ImPlotNative.ImPlotRange_Contains((ImPlotRange*)(NativePtr), value);
