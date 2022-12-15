@@ -171,5 +171,10 @@ namespace ImGuiNET.Unity
             _platform = platform;
             _platform?.Initialize(io);
         }
+
+        public void SetCamera(Camera camera)
+        {
+            _camera = camera;
+        }
     }
 }
