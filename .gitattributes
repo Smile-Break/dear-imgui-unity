@@ -112,3 +112,5 @@
 # Other
 *.reason  filter=lfs diff=lfs merge=lfs -text
 *.rns     filter=lfs diff=lfs merge=lfs -text
+
+Plugins/macos/cimplot.dylib filter=lfs diff=lfs merge=lfs -text
