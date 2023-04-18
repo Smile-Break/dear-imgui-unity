@@ -11,9 +11,10 @@ UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/o
 - Example script:
   ```cs
   using UnityEngine;
+  using UnityEngine.UI;
   using ImGuiNET;
 
-  public class DearImGuiDemo : MonoBehaviour
+  public class DearImGuiDemo : Graphic
   {
       void OnEnable()
       {
@@ -28,6 +29,18 @@ UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/o
       void OnLayout()
       {
           ImGui.ShowDemoWindow();
+      }
+
+      // Intercept mouse input for the whole Unity project including UI input by overriding this function from `Graphic`.
+      // When the Unity Input System tries to decide what the mouse is over, this function will be called.
+      public override bool Raycast(Vector2 sp, Camera eventCamera)
+      {
+          if (!isActiveAndEnabled)
+          {
+              return false;
+          }
+  
+          return ImGui.GetIO().WantCaptureMouse;
       }
   }
   ```
