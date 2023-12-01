@@ -45,6 +45,7 @@ namespace ImGuiNET.Unity
 
         public void Assign(ImGuiIOPtr io)
         {
+#if !UNITY_IOS
             io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_setClipboardText);
             io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(_getClipboardText);
             io.SetPlatformImeDataFn = Marshal.GetFunctionPointerForDelegate(_setPlatformImeData);
@@ -55,7 +56,8 @@ namespace ImGuiNET.Unity
                 DebugBreakFn = Marshal.GetFunctionPointerForDelegate(_debugBreak),
             });
 #endif
-        }
+#endif
+		}
 
         public void Unset(ImGuiIOPtr io)
         {
