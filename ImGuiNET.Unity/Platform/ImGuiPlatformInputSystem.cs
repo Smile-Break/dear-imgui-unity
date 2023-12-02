@@ -92,6 +92,7 @@ namespace ImGuiNET.Unity
             UpdateMouse(io, Mouse.current);                                     // update mouse state
             UpdateCursor(io, ImGui.GetMouseCursor());                           // update Unity cursor with the cursor requested by ImGui
             UpdateGamepad(io, Gamepad.current);                                 // update game controllers (if enabled and available)
+            UpdateTouch(io);
 
             // ini settings
             if (_iniSettings != null && io.WantSaveIniSettings)
@@ -219,6 +220,36 @@ namespace ImGuiNET.Unity
             io.NavInputs[(int)ImGuiNavInput.LStickUp   ] = gamepad.leftStick.up.ReadValue();
             io.NavInputs[(int)ImGuiNavInput.LStickDown ] = gamepad.leftStick.down.ReadValue();
         }
+
+        static void UpdateTouch(ImGuiIOPtr io)
+        {
+            if (Input.touchCount > 0)
+            {
+				var touch = Input.GetTouch(0);
+
+                if (Input.touchCount == 1)
+                {
+                    var touchScroll = touch.deltaPosition / 120f;
+                    io.MouseWheel = -touchScroll.y;
+                    io.MouseWheelH = touchScroll.x;
+
+                    if (touch.phase == UnityEngine.TouchPhase.Began)
+                    {
+						var touchPos = ImGuiUn.ScreenToImGui(touch.position);
+						io.MousePos = new System.Numerics.Vector2(touchPos.x, touchPos.y);
+					}
+				}
+                else
+                {
+					var touchPos = ImGuiUn.ScreenToImGui(touch.position);
+					io.MousePos = new System.Numerics.Vector2(touchPos.x, touchPos.y);
+				}
+			}
+
+			io.MouseDown[0] = Input.touchCount > 0;
+			io.MouseDown[1] = Input.touchCount > 1;
+			io.MouseDown[2] = Input.touchCount > 2;
+		}
 
         void UpdateCursor(ImGuiIOPtr io, ImGuiMouseCursor cursor)
         {
