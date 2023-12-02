@@ -92,7 +92,7 @@ namespace ImGuiNET.Unity
             UpdateMouse(io, Mouse.current);                                     // update mouse state
             UpdateCursor(io, ImGui.GetMouseCursor());                           // update Unity cursor with the cursor requested by ImGui
             UpdateGamepad(io, Gamepad.current);                                 // update game controllers (if enabled and available)
-            UpdateTouch(io);
+            UpdateTouch(io, Touchscreen.current);
 
             // ini settings
             if (_iniSettings != null && io.WantSaveIniSettings)
@@ -221,34 +221,46 @@ namespace ImGuiNET.Unity
             io.NavInputs[(int)ImGuiNavInput.LStickDown ] = gamepad.leftStick.down.ReadValue();
         }
 
-        static void UpdateTouch(ImGuiIOPtr io)
+        static void UpdateTouch(ImGuiIOPtr io, Touchscreen touchscreen)
         {
-            if (Input.touchCount > 0)
+            if (touchscreen == null)
             {
-				var touch = Input.GetTouch(0);
+                return;
+            }
 
-                if (Input.touchCount == 1)
+            var fingerCount = 0;
+            foreach (var touch in touchscreen.touches)
+            {
+                if (touch.press.isPressed)
                 {
-                    var touchScroll = touch.deltaPosition / 120f;
-                    io.MouseWheel = -touchScroll.y;
-                    io.MouseWheelH = touchScroll.x;
+                    ++fingerCount;
+                }
+            }
 
-                    if (touch.phase == UnityEngine.TouchPhase.Began)
-                    {
-						var touchPos = ImGuiUn.ScreenToImGui(touch.position);
+            if (fingerCount > 0)
+            {
+				var touch = touchscreen.touches[0];
+				if (fingerCount == 1)
+				{
+					io.MouseWheel = -touch.delta.y.value / 120f;
+					io.MouseWheelH = touch.delta.x.value / 120f;
+
+					if (touch.phase.value == UnityEngine.InputSystem.TouchPhase.Began)
+					{
+						var touchPos = ImGuiUn.ScreenToImGui(touch.position.value);
 						io.MousePos = new System.Numerics.Vector2(touchPos.x, touchPos.y);
 					}
 				}
-                else
-                {
-					var touchPos = ImGuiUn.ScreenToImGui(touch.position);
+				else
+				{
+					var touchPos = ImGuiUn.ScreenToImGui(touch.position.value);
 					io.MousePos = new System.Numerics.Vector2(touchPos.x, touchPos.y);
 				}
 			}
 
-			io.MouseDown[0] = Input.touchCount > 0;
-			io.MouseDown[1] = Input.touchCount > 1;
-			io.MouseDown[2] = Input.touchCount > 2;
+			io.MouseDown[0] = fingerCount > 0;
+			io.MouseDown[1] = fingerCount > 1;
+			io.MouseDown[2] = fingerCount > 2;
 		}
 
         void UpdateCursor(ImGuiIOPtr io, ImGuiMouseCursor cursor)
